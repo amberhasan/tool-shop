@@ -15,15 +15,13 @@ public class RentalAgreementTest {
         }
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testScenarioToolCharge101PercentDiscount() {
         Tool tool = new Tool("JAKR", ToolType.JACKHAMMER, "Ridgid", 2.99);
         Date checkoutDate = createDate("09/03/15");
         RentalAgreement agreement = new RentalAgreement(tool, 5, 101, checkoutDate);
 
         agreement.calculateCharges();
-        String expectedOutput = "Tool code: JAKR\nCheckout date: 09/03/2015\nRental days: 5\nDiscount: 100%\nFinal charge: $0.00";
-        assertEquals(expectedOutput, agreement.printRentalAgreement());
     }
 
     @Test
@@ -80,4 +78,49 @@ public class RentalAgreementTest {
         String expectedOutput = "Tool code: JAKR\nCheckout date: 07/02/2020\nRental days: 4\nDiscount: 50%\nFinal charge: $2.99";
         assertEquals(expectedOutput, agreement.printRentalAgreement());
     }
+
+    @Test
+    public void testScenarioLadder7DaysNoDiscount() {
+        Tool tool = new Tool("LADW", ToolType.LADDER, "Werner", 1.99);
+        Date checkoutDate = createDate("07/15/20");
+        RentalAgreement agreement = new RentalAgreement(tool, 7, 0, checkoutDate);
+
+        agreement.calculateCharges();
+        String expectedOutput = "Tool code: LADW\nCheckout date: 07/15/2020\nRental days: 7\nDiscount: 0%\nFinal charge: $13.93";
+        assertEquals(expectedOutput, agreement.printRentalAgreement());
+    }
+
+    @Test
+    public void testScenarioChainsaw3Days20PercentDiscount() {
+        Tool tool = new Tool("CHNS", ToolType.CHAINSAW, "Stihl", 1.49);
+        Date checkoutDate = createDate("09/10/18");
+        RentalAgreement agreement = new RentalAgreement(tool, 3, 20, checkoutDate);
+
+        agreement.calculateCharges();
+        String expectedOutput = "Tool code: CHNS\nCheckout date: 09/10/2018\nRental days: 3\nDiscount: 20%\nFinal charge: $3.58";
+        assertEquals(expectedOutput, agreement.printRentalAgreement());
+    }
+
+    @Test
+    public void testScenarioJackhammer2Days5PercentDiscount() {
+        Tool tool = new Tool("JAKD", ToolType.JACKHAMMER, "DeWalt", 2.99);
+        Date checkoutDate = createDate("06/20/22");
+        RentalAgreement agreement = new RentalAgreement(tool, 2, 5, checkoutDate);
+
+        agreement.calculateCharges();
+        String expectedOutput = "Tool code: JAKD\nCheckout date: 06/20/2022\nRental days: 2\nDiscount: 5%\nFinal charge: $5.68";
+        assertEquals(expectedOutput, agreement.printRentalAgreement());
+    }
+
+    @Test
+    public void testScenarioChainsaw1DayNoDiscount() {
+        Tool tool = new Tool("CHNS", ToolType.CHAINSAW, "Stihl", 1.49);
+        Date checkoutDate = createDate("12/01/21");
+        RentalAgreement agreement = new RentalAgreement(tool, 1, 0, checkoutDate);
+
+        agreement.calculateCharges();
+        String expectedOutput = "Tool code: CHNS\nCheckout date: 12/01/2021\nRental days: 1\nDiscount: 0%\nFinal charge: $1.49";
+        assertEquals(expectedOutput, agreement.printRentalAgreement());
+    }
+
 }

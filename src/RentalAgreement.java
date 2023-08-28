@@ -14,6 +14,26 @@ public class RentalAgreement {
     private double finalCharge;
 
     public RentalAgreement(Tool tool, int rentalDays, int discountPercentage, Date checkoutDate) {
+        if (tool == null || tool.getToolCode() == null || tool.getToolCode().isEmpty()) {
+            throw new IllegalArgumentException("Invalid tool code");
+        }
+
+        if (tool.getToolType() == null) {
+            throw new IllegalArgumentException("Invalid tool type");
+        }
+
+        if (rentalDays <= 0) {
+            throw new IllegalArgumentException("Invalid rental days");
+        }
+
+        if (discountPercentage < 0 || discountPercentage > 100) {
+            throw new IllegalArgumentException("Invalid discount percentage");
+        }
+
+        if (checkoutDate == null || checkoutDate.after(new Date())) {
+            throw new IllegalArgumentException("Invalid checkout date");
+        }
+
         this.tool = tool;
         this.rentalDays = (rentalDays > 0) ? rentalDays : 0;
         this.discountPercentage = Math.min(100, Math.max(0, discountPercentage));
